@@ -3,7 +3,7 @@ using PyCall
 using DelimitedFiles
 ndimage = pyimport("scipy.ndimage")
 
-
+#Q4
 function get_max(size, world)
     label_world, nb_labels = ndimage.label(world,[[0,1,0],[1,1,1],[0,1,0]])
     sum = ndimage.sum(world, label_world, index=1:nb_labels)
@@ -24,5 +24,19 @@ plot(probs, mat', labels=["size = 20" "size = 50" "size = 100" "size = 200" "siz
 xlabel!("Probability P")
 ylabel!("Average Max Fractional Forest Size")
 title!("Percolation")
+# 0.57 looks to be about correct
 
-println(Base.REPLCompletions.latex_symbols["\\_min"])
+# Q5
+pc = 0.57
+N = 1000
+ps = [pc, pc/2, pc + (1-pc)/2]
+sizes = Dict()
+@time for p in ps
+    world = rand(500, 500) .<= p
+    label_world, nb_labels = ndimage.label(world,[[0,1,0],[1,1,1],[0,1,0]])
+    sizes[p] = ndimage.sum(world, label_world, 1:nb_labels)
+end
+
+density(sizes[pc])
+density(sizes[pc/2])
+density(sizes[pc + (1-pc)/2])
