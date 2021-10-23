@@ -1,6 +1,6 @@
 using BenchmarkTools
 using Plots
-
+using Statistics
 get_val(r, γ) = (1- r)^(-1/(γ - 1))
 
 n = 1000
@@ -17,7 +17,7 @@ for (index, N) in pairs(Ns)
     N_maxs[index, :]= Ni_results
 end
 
-plot([1:1000], N_maxs', layout = (3, 2))
+plot([1:1000], N_maxs', layout = (3, 3))
 
 k_max_means = mean(N_maxs, dims=2)
 

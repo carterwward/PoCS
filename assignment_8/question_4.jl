@@ -20,23 +20,9 @@ S_avgs = Array{Float64,2}(undef, length(probs), length(sizes))
         S_avgs[j, i] = mean(get_max.(s, worlds))
     end
 end
-plot(probs, mat', labels=["size = 20" "size = 50" "size = 100" "size = 200" "size = 500" "size = 1000"], legend=:topleft)
+plot(probs, S_avgs, labels=["size = 20" "size = 50" "size = 100" "size = 200" "size = 500" "size = 1000"], legend=:topleft, fmt = png, size=(700,500))
 xlabel!("Probability P")
 ylabel!("Average Max Fractional Forest Size")
 title!("Percolation")
 # 0.57 looks to be about correct
-
-# Q5
-pc = 0.57
-N = 1000
-ps = [pc, pc/2, pc + (1-pc)/2]
-sizes = Dict()
-@time for p in ps
-    world = rand(500, 500) .<= p
-    label_world, nb_labels = ndimage.label(world,[[0,1,0],[1,1,1],[0,1,0]])
-    sizes[p] = ndimage.sum(world, label_world, 1:nb_labels)
-end
-
-density(sizes[pc])
-density(sizes[pc/2])
-density(sizes[pc + (1-pc)/2])
+savefig(pwd()*"/assignment_8/a8q4g1.png")
